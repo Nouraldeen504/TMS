@@ -20,7 +20,7 @@ function verifyToken(req, res, next) {
 // Authentication Routes
 router.post('/auth/register', async (req, res) => {
     try {
-        const response = await axios.post('http://localhost:5000/auth/register', req.body);
+        const response = await axios.post('http://user-service:5000/auth/register', req.body);
         res.status(response.status).json(response.data);
     } catch (error) {
         res.status(error.response?.status || 500).json(error.response?.data || { error: 'Gateway error' });
@@ -29,7 +29,7 @@ router.post('/auth/register', async (req, res) => {
 
 router.post('/auth/login', async (req, res) => {
     try {
-        const response = await axios.post('http://localhost:5000/auth/login', req.body);
+        const response = await axios.post('http://user-service:5000/auth/login', req.body);
         res.status(response.status).json(response.data);
     } catch (error) {
         res.status(error.response?.status || 500).json(error.response?.data || { error: 'Gateway error' });
@@ -39,7 +39,7 @@ router.post('/auth/login', async (req, res) => {
 // Task Routes
 router.post('/tasks', verifyToken, async (req, res) => {
     try {
-        const response = await axios.post('http://localhost:8080/tasks', req.body, {
+        const response = await axios.post('http://task-service:8080/tasks', req.body, {
             headers: { 'Authorization': req.headers['authorization'] }
         });
         res.status(response.status).json(response.data);
@@ -50,7 +50,7 @@ router.post('/tasks', verifyToken, async (req, res) => {
 
 router.get('/tasks', verifyToken, async (req, res) => {
     try {
-        const response = await axios.get('http://localhost:8080/tasks', {
+        const response = await axios.get('http://task-service:8080/tasks', {
             headers: { 'Authorization': req.headers['authorization'] }
         });
         res.status(response.status).json(response.data);
@@ -61,7 +61,7 @@ router.get('/tasks', verifyToken, async (req, res) => {
 
 router.put('/tasks/:id/complete', verifyToken, async (req, res) => {
     try {
-        const response = await axios.put(`http://localhost:8080/tasks/${req.params.id}/complete`, {}, {
+        const response = await axios.put(`http://task-service:8080/tasks/${req.params.id}/complete`, {}, {
             headers: { 'Authorization': req.headers['authorization'] }
         });
         res.status(response.status).json(response.data);
